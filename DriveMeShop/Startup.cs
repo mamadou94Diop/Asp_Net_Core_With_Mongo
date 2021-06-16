@@ -1,8 +1,13 @@
+using DriveMeShop.Entity;
+using DriveMeShop.Repository;
+using DriveMeShop.Repository.implementation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MongoDB.Bson;
+using MongoDB.Driver;
 
 namespace DriveMeShop
 {
@@ -19,6 +24,18 @@ namespace DriveMeShop
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            var databaseConnection = Configuration.GetSection("DatabaseConnection");
+            var databaseName = Configuration.GetSection("DatabaseName");
+            var collectionName = Configuration.GetSection("CarCollectionName");
+
+            var mongoClient = new MongoClient(databaseConnection.Value);
+            var database = mongoClient.GetDatabase(databaseName.Value);
+            var collection = database.GetCollection<Car>(collectionName.Value);
+
+            var carRepository = new CarRepository(collection);
+
+            services.AddTransient<ICarRepository>(_ => carRepository);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
