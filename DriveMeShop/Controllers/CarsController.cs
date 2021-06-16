@@ -1,4 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using DriveMeShop.Extension;
+using DriveMeShop.Model;
+using DriveMeShop.Repository;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -6,8 +12,16 @@ using Microsoft.AspNetCore.Mvc;
 namespace DriveMeShop.Controllers
 {
     [Route("api/[controller]")]
+    [ApiController]
     public class CarsController : Controller
     {
+        private readonly ICarRepository repository;
+
+        public CarsController(ICarRepository _repository)
+        {
+            repository = _repository;
+        }
+
         // GET: api/values
         [HttpGet]
         public IEnumerable<string> Get()
@@ -25,8 +39,20 @@ namespace DriveMeShop.Controllers
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<IActionResult> PostAsync(CarModel carModel)
         {
+            try
+            {
+                var newCarId = await repository.CreateAsync(carModel.ToCar());
+
+                return  Ok(newCarId);
+
+            } catch(Exception exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "an error occured");
+            }
+            
+
         }
 
         // PUT api/values/5

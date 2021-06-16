@@ -10,8 +10,11 @@
     <Folder Include="Entity\" />
     <Folder Include="Repository\" />
     <Folder Include="Repository\implementation\" />
+    <Folder Include="Model\" />
+    <Folder Include="Extension\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="MongoDB.Driver" Version="2.12.0" />
+    <PackageReference Include="MongoDB.Driver" Version="2.12.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 </Project>
