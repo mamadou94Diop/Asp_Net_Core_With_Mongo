@@ -45,7 +45,7 @@ namespace DriveMeShop.Controllers
             {
                 var newCarId = await repository.CreateAsync(carModel.ToCar());
 
-                return  Ok(newCarId);
+                return Created("", newCarId);
 
             } catch(Exception exception)
             {
