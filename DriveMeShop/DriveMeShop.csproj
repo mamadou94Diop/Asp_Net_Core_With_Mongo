@@ -12,9 +12,13 @@
     <Folder Include="Repository\implementation\" />
     <Folder Include="Model\" />
     <Folder Include="Extension\" />
+    <Folder Include="CustomAnnotations\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MongoDB.Driver" Version="2.12.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="CustomAnnotations\" />
   </ItemGroup>
 </Project>
