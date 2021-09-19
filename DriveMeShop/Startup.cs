@@ -1,6 +1,10 @@
 using DriveMeShop.Entity;
+using DriveMeShop.Model;
 using DriveMeShop.Repository;
 using DriveMeShop.Repository.implementation;
+using DriveMeShop.Validators;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -24,6 +28,7 @@ namespace DriveMeShop
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddMvc().AddFluentValidation();
 
             var databaseConnection = Configuration.GetSection("DatabaseConnection");
             var databaseName = Configuration.GetSection("DatabaseName");
@@ -36,6 +41,10 @@ namespace DriveMeShop
             var carRepository = new CarRepository(collection);
 
             services.AddTransient<ICarRepository>(_ => carRepository);
+            services.AddTransient<IValidator<CarModel>>(_ => new CarModelValidator());
+            
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
