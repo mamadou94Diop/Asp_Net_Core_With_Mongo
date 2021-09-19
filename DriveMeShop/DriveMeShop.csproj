@@ -13,12 +13,16 @@
     <Folder Include="Model\" />
     <Folder Include="Extension\" />
     <Folder Include="CustomAnnotations\" />
+    <Folder Include="Validators\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MongoDB.Driver" Version="2.12.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="10.3.3" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="CustomAnnotations\" />
+    <None Remove="FluentValidation.AspNetCore" />
+    <None Remove="Validators\" />
   </ItemGroup>
 </Project>
