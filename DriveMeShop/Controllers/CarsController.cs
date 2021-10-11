@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Mime;
 using System.Threading.Tasks;
 using DriveMeShop.Extension;
 using DriveMeShop.Model;
@@ -36,8 +37,19 @@ namespace DriveMeShop.Controllers
             return ""+id;
         }
 
-        // POST api/values
+        /// <summary>
+        /// Creates a new car in catalog
+        /// </summary>
+        /// <param name="carModel"></param>
+        /// <returns>id of new inserted car</returns>
+        /// <response code="201">The car is succesfully created</response>
+        /// <response code="500">An error occure from the server when creating the car</response>
+        /// <response code="400">Data sent is not valid.</response>
         [HttpPost]
+        [ProducesResponseType(typeof(string),201)]
+        [ProducesResponseType(500)]
+        [ProducesResponseType(400)]
+        [Consumes("application/json")]
         public async Task<IActionResult> PostAsync(CarModel carModel)
         {
             try
@@ -50,8 +62,6 @@ namespace DriveMeShop.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "an error occured");
             }
-            
-
         }
 
         // PUT api/values/5
