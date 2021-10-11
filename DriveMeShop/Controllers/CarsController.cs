@@ -23,18 +23,64 @@ namespace DriveMeShop.Controllers
             repository = _repository;
         }
 
-        // GET: api/values
+        /// <summary>
+        /// Retrieves a list of cars available in catalog, matching optionnally with some filters
+        /// </summary>
+        /// <returns>list of cars </returns>
+        /// <param name="minimalReleasedYear">The year API should shart look up cars released that year and beyond</param>
+        /// <param name="maximalReleasedYear">the last year API should look up cars released to that year</param>
+        /// <response code="200">List of cars returned</response>
+        /// <response code="500">An error occured from server</response>
+        [ProducesResponseType(typeof(List<CarModel>),200)]
+        [ProducesResponseType(500)]
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IActionResult Get([FromQuery] int? minimalReleasedYear, [FromQuery] int? maximalReleasedYear)
         {
-            return new string[] { "value1", "value2" };
+            try
+            {
+                var cars = repository.GetCars(minimalReleasedYear, maximalReleasedYear).ConvertAll(car => car.ToCarModel());
+                return Ok(cars);
+            } catch(Exception exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "an error occured");
+            }
         }
 
-        // GET api/values/5
+        /// <summary>
+        /// Retrieve car with id matching with passed parameter
+        /// </summary>
+        /// <param name="id">id of the car to search</param>
+        /// <returns> the car corresponding with that id</returns>
+        /// <response code="200">The car with id passed was searched was found and returned</response>
+        /// <response code="404"> The car with id passed was not found</response>>
+        /// <response code="500">An error occured from server</response>
+        [ProducesResponseType(typeof(CarModel), 200)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
         [HttpGet("{id}")]
-        public string Get(int id)
+        public IActionResult Get(string id)
         {
-            return ""+id;
+            try
+            {
+                var car = repository.GetCar(id);
+                if (car != null)
+                {
+                    return Ok(car.ToCarModel());
+
+                }
+                else {
+                    return NotFound("This car id is unknown");
+                }
+            }
+            catch(FormatException exception)
+            {
+                return BadRequest(exception.Message);
+            }
+            catch (Exception exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "an error occured");
+
+            }
         }
 
         /// <summary>

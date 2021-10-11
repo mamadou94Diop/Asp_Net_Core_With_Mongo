@@ -22,6 +22,9 @@ namespace IntegrationTests
             database = client.GetDatabase(DATABASE_NAME);
             database.CreateCollection(CAR_COLLECTION_NAME);
 
+            var collection = GetCarCollection();
+            collection.InsertManyAsync(DataSet.GetData()).Wait();
+
         }
 
         public IMongoCollection<Car> GetCarCollection()

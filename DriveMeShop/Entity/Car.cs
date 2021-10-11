@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
+using System;
 
 namespace DriveMeShop.Entity
 {
@@ -14,6 +15,5 @@ namespace DriveMeShop.Entity
         public int ReleasedYear { get; set; }
         public int? LastRevisionYear { get; set; }
         public string TransmissionMode { get; set; }
-
     }
 }
