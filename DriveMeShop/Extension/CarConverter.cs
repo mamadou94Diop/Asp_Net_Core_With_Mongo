@@ -19,5 +19,20 @@ namespace DriveMeShop.Extension
             };
 
         }
+
+        public static CarModel ToCarModel(this Car car)
+        {
+            return new CarModel
+            {
+                Id = car.Id,
+                Make = car.Make,
+                Model = car.Model,
+                Mileage = car.Mileage,
+                ReleasedYear = car.ReleasedYear,
+                LastRevisionYear = car.LastRevisionYear,
+                IsTransmissionAutomatic = car.TransmissionMode == "AUTOMATIC"
+
+            };
+        }
     }
 }

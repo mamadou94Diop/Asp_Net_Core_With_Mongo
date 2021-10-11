@@ -1,8 +1,10 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using DriveMeShop.Entity;
 using DriveMeShop.Model;
 using Newtonsoft.Json;
 using NUnit.Framework;
@@ -95,6 +97,63 @@ namespace IntegrationTests
 
             //Act
             var result = await httpClient.PostAsync("/api/cars", body);
+
+            //Assert
+            Assert.AreEqual(false, result.IsSuccessStatusCode);
+            Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode);
+        }
+
+        [Test]
+        public async Task given_a_catalog_when_fetching_cars_is_successful_then_return_200_statusAsync()
+        {
+            //Act
+            var result = await httpClient.GetAsync("/api/cars");
+
+            //Assert
+            Assert.AreEqual(true, result.IsSuccessStatusCode);
+
+        }
+
+        [Test]
+        public async Task given_a_catalog_when_fetching_car_with_filters_not_matching_on_db_then_return_200_status_with_empty_list()
+        {
+            //Act
+            var result = await httpClient.GetAsync("/api/cars?minimalReleasedYear=2017&maximalReleasedYear=2021");
+
+            var jsonResult = await result.Content.ReadAsStringAsync();
+            var cars = JsonConvert.DeserializeObject<List<Car>>(jsonResult);
+
+            //Assert
+            Assert.AreEqual(true, result.IsSuccessStatusCode);
+            Assert.AreEqual(0, cars.Count);
+        }
+        [Test]
+        public async Task given_an_id_when_fetching_car_with_that_id_is_successful_then_return_200_status()
+        {
+            //Act
+            var result = await httpClient.GetAsync("/api/cars/6168c06d89af83d580f6e01e");
+
+            //Assert
+            Assert.AreEqual(true, result.IsSuccessStatusCode);
+
+        }
+
+        [Test]
+        public async Task given_an_id_when_fetching_car_with_that_id_returns_null_then_return_404_status()
+        {
+            //Act
+            var result = await httpClient.GetAsync("/api/cars/6168cb8d6abab7b8855aa5a0");
+
+            //Assert
+            Assert.AreEqual(false, result.IsSuccessStatusCode);
+            Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode);
+        }
+
+        [Test]
+        public async Task given_an_invalid_id_when_trying_to_fetch_car_with_that_id_then_return_400_status()
+        {
+            //Act
+            var result = await httpClient.GetAsync("/api/cars/6168cb8d6ab7b8855aa5a0");
 
             //Assert
             Assert.AreEqual(false, result.IsSuccessStatusCode);

@@ -1,4 +1,6 @@
-﻿using DriveMeShop.Entity;
+﻿using System;
+using System.Collections.Generic;
+using DriveMeShop.Entity;
 using MongoDB.Driver;
 
 namespace DriveMeShop.Repository.implementation
@@ -17,6 +19,24 @@ namespace DriveMeShop.Repository.implementation
             await carCollection.InsertOneAsync(car);
 
             return car.Id;
+        }
+
+        public Car GetCar(string id)
+        {
+            try
+            {
+                return carCollection.Find(car => car.Id == id).FirstOrDefault();
+            } catch (FormatException exception)
+            {
+                throw new FormatException("The format of the id is not correct");
+            }
+        }
+
+        public List<Car> GetCars(int? minimalReleasedYear, int? maximalReleasedYear)
+        {
+            return carCollection.Find(car => (minimalReleasedYear == null || car.ReleasedYear >= minimalReleasedYear) &&
+                                             (maximalReleasedYear == null || car.ReleasedYear <= maximalReleasedYear)
+                                ).ToList();
         }
     }
 }
