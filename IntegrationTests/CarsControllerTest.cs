@@ -97,7 +97,6 @@ namespace IntegrationTests
             var result = await httpClient.PostAsync("/api/cars", body);
 
             //Assert
-            Console.WriteLine(result.ReasonPhrase);
             Assert.AreEqual(false, result.IsSuccessStatusCode);
             Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode);
         }

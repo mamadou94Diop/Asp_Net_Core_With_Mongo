@@ -1,3 +1,5 @@
+using System;
+using System.Reflection;
 using DriveMeShop.Entity;
 using DriveMeShop.Model;
 using DriveMeShop.Repository;
@@ -10,7 +12,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace DriveMeShop
@@ -29,6 +30,24 @@ namespace DriveMeShop
         {
             services.AddControllers();
             services.AddMvc().AddFluentValidation();
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+                {
+                    Description = "Documentation for DriveMeShop API",
+                    Title = "DriveMeShop API",
+                    Version = "V1.0",
+                    Contact = new Microsoft.OpenApi.Models.OpenApiContact { 
+                    
+                         Name = "Mamadou Diop",
+                         Email = "mamadou-abdoulaye.diop@hotmail.com"
+                    }
+                });
+                var rootPath = AppContext.BaseDirectory;
+                var xmlPath = "DriveMeShop.xml";
+                options.IncludeXmlComments(rootPath + xmlPath, true);
+
+            });
 
             var databaseConnection = Configuration.GetSection("DatabaseConnection");
             var databaseName = Configuration.GetSection("DatabaseName");
@@ -42,9 +61,6 @@ namespace DriveMeShop
 
             services.AddTransient<ICarRepository>(_ => carRepository);
             services.AddTransient<IValidator<CarModel>>(_ => new CarModelValidator());
-            
-
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -53,6 +69,11 @@ namespace DriveMeShop
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(options =>
+                {
+                    options.SwaggerEndpoint("v1/swagger.json", "DriveMeShop API");
+                });
             }
 
             app.UseHttpsRedirection();
@@ -65,7 +86,7 @@ namespace DriveMeShop
             {
                 endpoints.MapControllers();
             });
-           
+
         }
     }
 }
