@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using DriveMeShop.Entity;
 using MongoDB.Driver;
+using static MongoDB.Driver.ReplaceOneResult;
 
 namespace DriveMeShop.Repository.implementation
 {
@@ -37,6 +39,19 @@ namespace DriveMeShop.Repository.implementation
             return carCollection.Find(car => (minimalReleasedYear == null || car.ReleasedYear >= minimalReleasedYear) &&
                                              (maximalReleasedYear == null || car.ReleasedYear <= maximalReleasedYear)
                                 ).ToList();
+        }
+
+        public async Task<string> UpdateCarAsync(Car car)
+        {
+            var replaceResult = await carCollection.ReplaceOneAsync((_car => car.Id == _car.Id), car);
+            if (replaceResult is Acknowledged)
+            {
+                return car.Id;
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }
