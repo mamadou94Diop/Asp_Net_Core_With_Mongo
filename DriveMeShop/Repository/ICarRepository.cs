@@ -9,5 +9,6 @@ namespace DriveMeShop.Repository
         public Task<string> CreateAsync(Car car);
         public List<Car> GetCars(int? minimalReleasedYear, int? maximalReleasedYear);
         public Car GetCar(string id);
+        public Task<string> UpdateCarAsync(Car car);
     }
 }

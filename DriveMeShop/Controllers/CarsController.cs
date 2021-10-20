@@ -111,10 +111,27 @@ namespace DriveMeShop.Controllers
         }
 
         // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        [HttpPut]
+        public async Task<IActionResult> PutAsync(CarModel carModel)
         {
+            if(carModel.Id == null)
+            {
+                return await PostAsync(carModel);
+            }
+            else
+            {
+                try
+                {
+                    var updatedCarId = await repository.UpdateCarAsync(carModel.ToCar());
+                    return Ok(updatedCarId);
+                }
+                catch (Exception exception)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, "an error occured");
+                }
 
+            }
+            
         }
 
         // DELETE api/values/5
