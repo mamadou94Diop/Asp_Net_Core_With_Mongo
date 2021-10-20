@@ -12,8 +12,8 @@ namespace DriveMeShop.CustomAnnotations
 
         public override bool IsValid(object value)
         {
-            var year = (int)value;
-            return year >= StartingYear && year <= currentYear;
+            var year = (int?)value;
+            return (year == null) || (year >= StartingYear && year <= currentYear);
         }
 
         public override string FormatErrorMessage(string name)

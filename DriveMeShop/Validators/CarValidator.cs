@@ -25,7 +25,7 @@ namespace DriveMeShop.Validators
 
         private bool IsReleasedYearBeforeLastRevisionYear(CarModel carModel)
         {
-            return carModel.ReleasedYear <= carModel.LastRevisionYear;
+            return (carModel.LastRevisionYear == null ) || (carModel.ReleasedYear <= carModel.LastRevisionYear);
         }
     }
 }
