@@ -96,13 +96,13 @@ namespace UnitTests
             });
 
             var carRepository = new Mock<ICarRepository>();
-            carRepository.Setup(repository => repository.GetCars())
+            carRepository.Setup(repository => repository.GetCars(null, null))
                 .Returns(mockCars);
 
             //Act
 
             var controller = new CarsController(carRepository.Object);
-            var result = controller.Get();
+            var result = controller.Get(null, null);
 
             //Assert
             Assert.AreEqual(StatusCodes.Status200OK, ((ObjectResult)result).StatusCode);
