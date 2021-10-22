@@ -43,14 +43,22 @@ namespace DriveMeShop.Repository.implementation
 
         public async Task<string> UpdateCarAsync(Car car)
         {
-            var replaceResult = await carCollection.ReplaceOneAsync((_car => car.Id == _car.Id), car);
-            if (replaceResult is Acknowledged)
+            try
             {
-                return car.Id;
+                var replaceResult = await carCollection.ReplaceOneAsync((_car => car.Id == _car.Id), car);
+                if (replaceResult is Acknowledged)
+                {
+                    return car.Id;
+                }
+                else
+                {
+                    return null;
+                }
             }
-            else
+            catch (FormatException exception)
             {
-                return null;
+                throw new FormatException("The format of the id is not correct");
+
             }
         }
     }
