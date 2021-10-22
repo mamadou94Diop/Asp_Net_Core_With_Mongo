@@ -89,7 +89,7 @@ namespace DriveMeShop.Controllers
         /// <param name="carModel"></param>
         /// <returns>id of new inserted car</returns>
         /// <response code="201">The car is succesfully created</response>
-        /// <response code="500">An error occure from the server when creating the car</response>
+        /// <response code="500">An error occured from the server when creating the car</response>
         /// <response code="400">Data sent is not valid.</response>
         [HttpPost]
         [ProducesResponseType(typeof(string),201)]
@@ -110,8 +110,19 @@ namespace DriveMeShop.Controllers
             }
         }
 
-        // PUT api/values/5
+        /// <summary>
+        /// Updates a car in catalog
+        /// </summary>
+        /// <param name="carModel"></param>
+        /// <returns code="200">The car is succesfully updated</returns>
+        /// <returns code="201">The car is successfully created(happens when car id was not provided in the request body)</returns>
+        /// <returns code="400">Data sent is not valid</returns>
+        /// <returns code="500">An error occured from server when updating/creating the car</returns>
         [HttpPut]
+        [ProducesResponseType(typeof(string), 201)]
+        [ProducesResponseType(typeof(string), 200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
         public async Task<IActionResult> PutAsync(CarModel carModel)
         {
             if(carModel.Id == null)
@@ -124,6 +135,10 @@ namespace DriveMeShop.Controllers
                 {
                     var updatedCarId = await repository.UpdateCarAsync(carModel.ToCar());
                     return Ok(updatedCarId);
+                }
+                catch(FormatException exception)
+                {
+                    return BadRequest(exception.Message);
                 }
                 catch (Exception exception)
                 {
