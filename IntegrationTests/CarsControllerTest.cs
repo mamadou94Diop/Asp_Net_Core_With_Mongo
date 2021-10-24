@@ -160,6 +160,55 @@ namespace IntegrationTests
             Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode);
         }
 
+        [Test]
+        public async Task given_a_car_without_id_when_updating_is_successful_then_return_201_status()
+        {
+            //Arrange
+            var car = new CarModel {
+                Make = "Ford",
+                Model = "MustangV",
+                Mileage = 236700,
+                ReleasedYear = 2007,
+                LastRevisionYear = 2012,
+                IsTransmissionAutomatic = true
+            };
+
+            var jsonBody = JsonConvert.SerializeObject(car);
+            var body = new StringContent(jsonBody, Encoding.UTF8, "application/json");
+
+            //Act
+            var result = await httpClient.PutAsync("/api/cars", body);
+
+            //Assert
+            Assert.AreEqual(HttpStatusCode.Created, result.StatusCode);
+
+        }
+
+        [Test]
+        public async Task given_a_car_with_id_when_update_is_succesful_then_return_200_statusAsync()
+        {
+            //Arrange
+            var car = new CarModel
+            {
+                Id = "6168c06d89af83d580f6e01e",
+                Make = "BMW",
+                Model = "X6",
+                IsTransmissionAutomatic = true,
+                ReleasedYear = 2016,
+                LastRevisionYear = 2020,
+                Mileage = 120000
+            };
+
+            var jsonBody = JsonConvert.SerializeObject(car);
+            var body = new StringContent(jsonBody, Encoding.UTF8, "application/json");
+
+            //Act
+            var result = await httpClient.PutAsync("/api/cars", body);
+
+            //Assert
+            Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
+        }
+
         [TearDown]
         public void TearDown()
         {
