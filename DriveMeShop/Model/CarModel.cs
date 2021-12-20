@@ -37,7 +37,7 @@ namespace DriveMeShop.Model
         ///  The miles driven in the car
         /// </summary>
         /// <example>
-        ///  13000 
+        ///  13000
         /// </example>
         [Required]
         [GreaterOrEqualThan(Minimum = 0)]
