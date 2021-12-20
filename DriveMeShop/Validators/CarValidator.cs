@@ -15,7 +15,7 @@ namespace DriveMeShop.Validators
 
             RuleFor(carModel => carModel)
                 .Must(AreModelAndMakeDifferent)
-                .WithMessage("Make and Model should not be the same");
+                .WithMessage("Make and Model should not be the same"); 
         }
 
         private bool AreModelAndMakeDifferent(CarModel carModel)

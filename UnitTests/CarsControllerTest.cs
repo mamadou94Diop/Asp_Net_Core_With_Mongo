@@ -96,7 +96,7 @@ namespace UnitTests
             });
 
             var carRepository = new Mock<ICarRepository>();
-            carRepository.Setup(repository => repository.GetCars(null, null))
+            carRepository.Setup(repository => repository.GetCars(It.IsAny<int?>(), It.IsAny<int?>()))
                 .Returns(mockCars);
 
             //Act
@@ -150,6 +150,25 @@ namespace UnitTests
 
             //Assert
             Assert.AreEqual(StatusCodes.Status404NotFound, ((ObjectResult)result).StatusCode);
+        }
+
+        [Test]
+        public void given_an_invalid_id_when_trying_to_fetch_car_with_that_id_then_return_400_status()
+        {
+            //Arrange
+            var exception = new FormatException("format exception");
+            var carRepository = new Mock<ICarRepository>();
+            carRepository.Setup(repository => repository.GetCar(It.IsAny<string>()))
+                .Throws(exception);
+
+
+            //Act
+            var controller = new CarsController(carRepository.Object);
+            var result = controller.Get("1452555ADDDKD");
+
+
+            //Assert
+            Assert.AreEqual(StatusCodes.Status400BadRequest,((ObjectResult)result).StatusCode);
         }
     }
 }
