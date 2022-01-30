@@ -60,7 +60,9 @@ namespace DriveMeShop
             var carRepository = new CarRepository(collection);
 
             services.AddTransient<ICarRepository>(_ => carRepository);
-            services.AddTransient<IValidator<CarModel>>(_ => new CarModelValidator());
+
+            services.AddTransient<IValidator<IdentifiedCarModel>>(_ => new IdentifiedCarModelValidator());
+            services.AddTransient<IValidator<UnidentifiedCarModel>>(_ => new UnidentifiedCarModelValidator());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
