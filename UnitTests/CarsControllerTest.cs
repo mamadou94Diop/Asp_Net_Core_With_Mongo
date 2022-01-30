@@ -20,7 +20,7 @@ namespace UnitTests
         {
             //Arrange
 
-            var carModel = new CarModel
+            var carModel = new UnidentifiedCarModel
             {
                 Make = "BMW",
                 Model = "X6",
@@ -29,12 +29,12 @@ namespace UnitTests
                 Mileage = 5000
             };
 
-            var fakeCreatedCarId = Task.FromResult<String>("fhfhflhflhflhf");
+            var fakeCarId = Task.FromResult<String>("fhfhflhflhflhf");
 
             var carRepository = new Mock<ICarRepository>();
 
             carRepository.Setup (repository => repository.CreateAsync(It.IsAny<Car>()))
-                         .Returns(fakeCreatedCarId);
+                         .Returns(fakeCarId);
 
 
             //Act
@@ -53,7 +53,7 @@ namespace UnitTests
         {
 
             //Arrange
-            var carModel = new CarModel
+            var carModel = new UnidentifiedCarModel
             {
                 Make = "BMW",
                 Model = "X6",
@@ -174,7 +174,7 @@ namespace UnitTests
         public async Task given_a_car_without_id_when_updating_is_successful_then_return_201_status()
         {
             //Arrange
-            var carmodel = new CarModel
+            var carmodel = new IdentifiedCarModel
             {
                 Make = "Nissan",
                 Model = "Qasqhai",
@@ -202,7 +202,7 @@ namespace UnitTests
         public async Task given_a_car_with_an_id_when_update_throws_format_exception_then_return_400_statusAsync()
         {
             //Arrange
-            var carmodel = new CarModel
+            var carmodel = new IdentifiedCarModel
             {
                 Id = "tfuuvjv133",
                 Make = "Nissan",
@@ -212,10 +212,24 @@ namespace UnitTests
                 IsTransmissionAutomatic = true,
                 LastRevisionYear = 2020
             };
+            var existingCar = new Car
+            {
+                Id = "tfuuvjv133",
+                Make = "Nissan",
+                Model = "Qasqhai",
+                Mileage = 95000,
+                ReleasedYear = 2018,
+                LastRevisionYear = 2020,
+                TransmissionMode = "AUTOMATIC"
+            };
 
             var mockException = new FormatException("Format error");
 
             var carRepository = new Mock<ICarRepository>();
+
+            carRepository.Setup(repository => repository.GetCar(It.IsAny<String>()))
+                .Returns(existingCar);
+
             carRepository.Setup(repository => repository.UpdateCarAsync(It.IsAny<Car>()))
                 .Throws(mockException);
 
@@ -231,7 +245,53 @@ namespace UnitTests
         public async Task given_a_car_with_id_when_update_is_succesful_then_return_200_statusAsync()
         {
             //Arrange
-            var carmodel = new CarModel
+            var carmodel = new IdentifiedCarModel
+            {
+                Id = "tfuuvjv133",
+                Make = "Nissan",
+                Model = "Qasqhai",
+                Mileage = 135000,
+                ReleasedYear = 2018,
+                IsTransmissionAutomatic = true,
+                LastRevisionYear = 2020
+            };
+            var id = "tfuuvjv133";
+
+            var existingCar = new Car
+            {
+                Id = "tfuuvjv133",
+                Make = "Nissan",
+                Model = "Qasqhai",
+                Mileage = 95000,
+                ReleasedYear = 2018,
+                LastRevisionYear = 2020,
+                TransmissionMode = "AUTOMATIC"
+            };
+
+
+            var carRepository = new Mock<ICarRepository>();
+
+
+            carRepository.Setup(repository => repository.GetCar(It.IsAny<String>()))
+                .Returns(existingCar);
+
+
+            carRepository.Setup(repository => repository.UpdateCarAsync(It.IsAny<Car>()))
+                .Returns(Task.FromResult(id));
+
+            //Act
+            var controller = new CarsController(carRepository.Object);
+            var result = await controller.PutAsync(carmodel);
+
+            //Assert
+            Assert.AreEqual(StatusCodes.Status200OK, ((ObjectResult)result).StatusCode);
+        }
+
+        [Test]
+        public async Task given_a_car_with_id_unknown_in_database_when_update_is_succesful_then_return_201_statusAsync()
+        {
+            //Arrange
+            var carmodel = new IdentifiedCarModel
             {
                 Id = "tfuuvjv133",
                 Make = "Nissan",
@@ -245,7 +305,7 @@ namespace UnitTests
 
             var carRepository = new Mock<ICarRepository>();
 
-            carRepository.Setup(repository => repository.UpdateCarAsync(It.IsAny<Car>()))
+            carRepository.Setup(repository => repository.CreateAsync(It.IsAny<Car>()))
                 .Returns(Task.FromResult(id));
 
             //Act
@@ -253,7 +313,8 @@ namespace UnitTests
             var result = await controller.PutAsync(carmodel);
 
             //Assert
-            Assert.AreEqual(StatusCodes.Status200OK, ((ObjectResult)result).StatusCode);
+            Assert.AreEqual(StatusCodes.Status201Created, ((ObjectResult)result).StatusCode);
+
         }
     }
 }

@@ -4,10 +4,10 @@ using FluentValidation;
 
 namespace DriveMeShop.Validators
 {
-    public class CarModelValidator: AbstractValidator<CarModel>
+    public class UnidentifiedCarModelValidator: AbstractValidator<UnidentifiedCarModel>
     {
 
-        public CarModelValidator()
+        public UnidentifiedCarModelValidator()
         {
             RuleFor(carModel => carModel)
                 .Must(IsReleasedYearBeforeLastRevisionYear)
@@ -18,12 +18,16 @@ namespace DriveMeShop.Validators
                 .WithMessage("Make and Model should not be the same"); 
         }
 
-        private bool AreModelAndMakeDifferent(CarModel carModel)
+        private bool AreModelAndMakeDifferent(UnidentifiedCarModel carModel)
         {
-            return carModel.Make.ToLower() != carModel.Model.ToLower();
+            if (carModel.Make != null && carModel.Model != null)
+            {
+                return carModel.Make.ToLower() != carModel.Model.ToLower();
+            }
+            return true;
         }
 
-        private bool IsReleasedYearBeforeLastRevisionYear(CarModel carModel)
+        private bool IsReleasedYearBeforeLastRevisionYear(UnidentifiedCarModel carModel)
         {
             return (carModel.LastRevisionYear == null ) || (carModel.ReleasedYear <= carModel.LastRevisionYear);
         }

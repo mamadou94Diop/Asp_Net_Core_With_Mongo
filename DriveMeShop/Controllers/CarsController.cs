@@ -31,14 +31,14 @@ namespace DriveMeShop.Controllers
         /// <param name="maximalReleasedYear">The maximal released year api should stop searching car beyond</param>
         /// <response code="200">List of cars returned</response>
         /// <response code="500">An error occured from server</response>
-        [ProducesResponseType(typeof(List<CarModel>),200)]
+        [ProducesResponseType(typeof(List<IdentifiedCarModel>),200)]
         [ProducesResponseType(500)]
         [HttpGet]
         public IActionResult Get([FromQuery] int? minimalReleasedYear, [FromQuery] int? maximalReleasedYear)
         {
             try
             {
-                var cars = repository.GetCars(minimalReleasedYear, maximalReleasedYear).ConvertAll(car => car.ToCarModel());
+                var cars = repository.GetCars(minimalReleasedYear, maximalReleasedYear).ConvertAll(car => car.ToIdentifiedCarModel());
                 return Ok(cars);
             } catch(Exception exception)
             {
@@ -54,7 +54,7 @@ namespace DriveMeShop.Controllers
         /// <response code="200">The car with id passed was searched was found and returned</response>
         /// <response code="404"> The car with id passed was not found</response>>
         /// <response code="500">An error occured from server</response>
-        [ProducesResponseType(typeof(CarModel), 200)]
+        [ProducesResponseType(typeof(IdentifiedCarModel), 200)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
         [HttpGet("{id}")]
@@ -65,7 +65,7 @@ namespace DriveMeShop.Controllers
                 var car = repository.GetCar(id);
                 if (car != null)
                 {
-                    return Ok(car.ToCarModel());
+                    return Ok(car.ToIdentifiedCarModel());
 
                 }
                 else {
@@ -96,7 +96,7 @@ namespace DriveMeShop.Controllers
         [ProducesResponseType(500)]
         [ProducesResponseType(400)]
         [Consumes("application/json")]
-        public async Task<IActionResult> PostAsync(CarModel carModel)
+        public async Task<IActionResult> PostAsync(UnidentifiedCarModel carModel)
         {
             try
             {
@@ -124,7 +124,7 @@ namespace DriveMeShop.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(500)]
         [Consumes("application/json")]
-        public async Task<IActionResult> PutAsync(CarModel carModel)
+        public async Task<IActionResult> PutAsync(IdentifiedCarModel carModel)
         {
             if(carModel.Id == null)
             {
@@ -134,8 +134,16 @@ namespace DriveMeShop.Controllers
             {
                 try
                 {
-                    var updatedCarId = await repository.UpdateCarAsync(carModel.ToCar());
-                    return Ok(updatedCarId);
+                    var car = repository.GetCar(carModel.Id);
+                    if(car != null)
+                    {
+                        var updatedCarId = await repository.UpdateCarAsync(carModel.ToCar());
+                        return Ok(updatedCarId);
+                    }
+                    else
+                    {
+                        return await PostAsync(carModel);
+                    }
                 }
                 catch(FormatException exception)
                 {
