@@ -57,7 +57,7 @@ namespace DriveMeShop.Model
 
 
         /// <summary>
-        ///  The year when the car receives its first technical revision
+        ///  The year when the car receives its last technical revision
         /// </summary>
         /// <example>
         ///   2021
