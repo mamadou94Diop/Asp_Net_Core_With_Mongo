@@ -4,15 +4,8 @@ using Newtonsoft.Json;
 
 namespace DriveMeShop.Model
 {
-    public class CarModel
+    public class UnidentifiedCarModel
     {
-        /// <summary>
-        ///  Identifier of the car
-        /// </summary>
-        [JsonProperty("id")]
-        public string Id { get; set; }
-
-
         /// <summary>
         ///   The make of the car
         /// </summary>

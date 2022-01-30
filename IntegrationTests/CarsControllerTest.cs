@@ -28,7 +28,7 @@ namespace IntegrationTests
         public async Task given_a_car_when_insert_is_succesful_then_return_201_status()
         {
             //Arrange
-            var car = new CarModel
+            var car = new UnidentifiedCarModel
             {
                 Make = "Toyota",
                 Model = "Yaris",
@@ -55,7 +55,7 @@ namespace IntegrationTests
         public async Task given_a_car_with_invalid_information_when_insert_then_return_400_status()
         {
             //Arrange
-            var car = new CarModel
+            var car = new UnidentifiedCarModel
             {
                 Make = "Toyota",
                 Model = "Yaris",
@@ -81,7 +81,7 @@ namespace IntegrationTests
         public async Task given_a_car_with_inconsistent_information_when_insert_then_return_400_status()
         {
             //Arrange
-            var car = new CarModel
+            var car = new UnidentifiedCarModel
             {
                 Make = "Toyota",
                 Model = "Yaris",
@@ -101,6 +101,34 @@ namespace IntegrationTests
             //Assert
             Assert.AreEqual(false, result.IsSuccessStatusCode);
             Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode);
+        }
+
+        [Test]
+        public async Task given_a_car_with_unknown_id_in_the_database_when_creating_is_successful_then_return_201_status()
+        {
+            //Arrange
+            var car = new IdentifiedCarModel
+            {
+                Id = "61f667667cb328c6005c8392",
+                Make = "Ford",
+                Model = "MustangV",
+                Mileage = 236700,
+                ReleasedYear = 2007,
+                LastRevisionYear = 2012,
+                IsTransmissionAutomatic = true
+            };
+
+            var jsonBody = JsonConvert.SerializeObject(car);
+            var body = new StringContent(jsonBody, Encoding.UTF8, "application/json");
+
+            //Act
+            var result = await httpClient.PostAsync("/api/cars", body);
+            string jsonResult = await result.Content.ReadAsStringAsync();
+
+            //Assert
+            Assert.AreEqual(HttpStatusCode.Created, result.StatusCode);
+            Assert.AreNotEqual(jsonResult, car.Id);
+
         }
 
         [Test]
@@ -164,7 +192,7 @@ namespace IntegrationTests
         public async Task given_a_car_without_id_when_updating_is_successful_then_return_201_status()
         {
             //Arrange
-            var car = new CarModel {
+            var car = new IdentifiedCarModel {
                 Make = "Ford",
                 Model = "MustangV",
                 Mileage = 236700,
@@ -185,10 +213,36 @@ namespace IntegrationTests
         }
 
         [Test]
-        public async Task given_a_car_with_id_when_update_is_succesful_then_return_200_statusAsync()
+        public async Task given_a_car_with_unknown_id_in_the_database_when_updating_is_successful_then_return_201_status()
         {
             //Arrange
-            var car = new CarModel
+            var car = new IdentifiedCarModel
+            {
+                Id = "61f667667cb328c6005c8392",
+                Make = "Ford",
+                Model = "MustangV",
+                Mileage = 236700,
+                ReleasedYear = 2007,
+                LastRevisionYear = 2012,
+                IsTransmissionAutomatic = true
+            };
+
+            var jsonBody = JsonConvert.SerializeObject(car);
+            var body = new StringContent(jsonBody, Encoding.UTF8, "application/json");
+
+            //Act
+            var result = await httpClient.PutAsync("/api/cars", body);
+
+            //Assert
+            Assert.AreEqual(HttpStatusCode.Created, result.StatusCode);
+
+        }
+
+        [Test]
+        public async Task given_a_car_with_id_when_update_is_successful_then_return_200_statusAsync()
+        {
+            //Arrange
+            var car = new IdentifiedCarModel
             {
                 Id = "6168c06d89af83d580f6e01e",
                 Make = "BMW",
