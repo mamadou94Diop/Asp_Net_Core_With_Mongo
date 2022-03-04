@@ -114,15 +114,16 @@ namespace DriveMeShop.Controllers
         /// Updates a car in catalog
         /// </summary>
         /// <param name="carModel"></param>
-        /// <returns code="200">The car is succesfully updated</returns>
-        /// <returns code="201">The car is successfully created(happens when car id was not provided in the request body)</returns>
-        /// <returns code="400">Data sent is not valid</returns>
-        /// <returns code="500">An error occured from server when updating/creating the car</returns>
+        /// <response code="200">The car is successfully updated</response>
+        /// <response code="201">The car is successfully created</response>
+        /// <response code="400">Data received is not valid</response>
+        /// <response code="500">An error occured from server</response>
         [HttpPut]
         [ProducesResponseType(typeof(string), 201)]
         [ProducesResponseType(typeof(string), 200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(500)]
+        [Consumes("application/json")]
         public async Task<IActionResult> PutAsync(CarModel carModel)
         {
             if(carModel.Id == null)
