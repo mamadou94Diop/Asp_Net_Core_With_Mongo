@@ -61,5 +61,15 @@ namespace DriveMeShop.Repository.implementation
 
             }
         }
+
+        public async Task<string> UpdateCarLastRevisionYearAsync(string id, int? lastRevisionYear)
+        {
+            var filter = Builders<Car>.Filter.Eq(car => car.Id, id);
+            var update = Builders<Car>.Update.Set(car => car.LastRevisionYear, lastRevisionYear);
+
+            var updateResult = await carCollection.UpdateOneAsync(filter, update);
+
+            return updateResult.IsAcknowledged ? id : null;
+        }
     }
 }
