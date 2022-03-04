@@ -31,7 +31,7 @@ namespace DriveMeShop.Controllers
         /// <param name="maximalReleasedYear">The maximal released year api should stop searching car beyond</param>
         /// <response code="200">List of cars returned</response>
         /// <response code="500">An error occured from server</response>
-        [ProducesResponseType(typeof(List<IdentifiedCarModel>),200)]
+        [ProducesResponseType(typeof(List<IdentifiedCarModel>), 200)]
         [ProducesResponseType(500)]
         [HttpGet]
         public IActionResult Get([FromQuery] int? minimalReleasedYear, [FromQuery] int? maximalReleasedYear)
@@ -40,7 +40,8 @@ namespace DriveMeShop.Controllers
             {
                 var cars = repository.GetCars(minimalReleasedYear, maximalReleasedYear).ConvertAll(car => car.ToIdentifiedCarModel());
                 return Ok(cars);
-            } catch(Exception exception)
+            }
+            catch (Exception exception)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "an error occured");
             }
@@ -68,13 +69,14 @@ namespace DriveMeShop.Controllers
                     return Ok(car.ToIdentifiedCarModel());
 
                 }
-                else {
+                else
+                {
                     return NotFound("This car id is unknown");
                 }
             }
-            catch(FormatException exception)
+            catch (FormatException exception)
             {
-                return BadRequest(exception.Message); 
+                return BadRequest(exception.Message);
             }
             catch (Exception exception)
             {
@@ -92,7 +94,7 @@ namespace DriveMeShop.Controllers
         /// <response code="500">An error occured from the server when creating the car</response>
         /// <response code="400">Data sent is not valid.</response>
         [HttpPost]
-        [ProducesResponseType(typeof(string),201)]
+        [ProducesResponseType(typeof(string), 201)]
         [ProducesResponseType(500)]
         [ProducesResponseType(400)]
         [Consumes("application/json")]
@@ -104,7 +106,8 @@ namespace DriveMeShop.Controllers
 
                 return Created("", newCarId);
 
-            } catch(Exception exception)
+            }
+            catch (Exception exception)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "an error occured");
             }
@@ -126,7 +129,7 @@ namespace DriveMeShop.Controllers
         [Consumes("application/json")]
         public async Task<IActionResult> PutAsync(IdentifiedCarModel carModel)
         {
-            if(carModel.Id == null)
+            if (carModel.Id == null)
             {
                 return await PostAsync(carModel);
             }
@@ -135,7 +138,7 @@ namespace DriveMeShop.Controllers
                 try
                 {
                     var car = repository.GetCar(carModel.Id);
-                    if(car != null)
+                    if (car != null)
                     {
                         var updatedCarId = await repository.UpdateCarAsync(carModel.ToCar());
                         return Ok(updatedCarId);
@@ -145,7 +148,7 @@ namespace DriveMeShop.Controllers
                         return await PostAsync(carModel);
                     }
                 }
-                catch(FormatException exception)
+                catch (FormatException exception)
                 {
                     return BadRequest(exception.Message);
                 }
@@ -155,7 +158,61 @@ namespace DriveMeShop.Controllers
                 }
 
             }
-            
+
+        }
+
+        [HttpPatch("{id}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        [Consumes("application/json")]
+        public async Task<IActionResult> PatchAsync(string id, CarLastRevisionYearModel lastRevisionYearModel)
+        {
+            try
+            {
+                var car = repository.GetCar(id);
+                if(car != null)
+                {
+                    var isValid = (lastRevisionYearModel.LastRevisionYear == null) || (car.ReleasedYear <= lastRevisionYearModel.LastRevisionYear);
+
+                    if (isValid)
+                    {
+                        var result = await repository.UpdateCarLastRevisionYearAsync(id, lastRevisionYearModel.LastRevisionYear);
+                        if(result != null)
+                        {
+                            return NoContent();
+                        }
+                        else
+
+                        {
+                            return StatusCode(StatusCodes.Status500InternalServerError, "The update was not successful");
+                        }
+
+                    } else
+                    {
+                        var message = "Car released year should not be greater than last revision year";
+
+                        return BadRequest(message);
+                    }
+                }
+                else
+                {
+                    var message = $"Car with id {id} not found";
+                    return NotFound(message);
+                }
+
+            }
+            catch (FormatException exception)
+            {
+                return BadRequest(exception.Message);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "an error occured");
+
+            }
+
         }
 
         // DELETE api/values/5
@@ -163,5 +220,6 @@ namespace DriveMeShop.Controllers
         public void Delete(int id)
         {
         }
+
     }
 }
