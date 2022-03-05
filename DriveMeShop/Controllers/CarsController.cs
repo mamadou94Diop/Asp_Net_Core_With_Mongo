@@ -160,7 +160,16 @@ namespace DriveMeShop.Controllers
             }
 
         }
-
+        /// <summary>
+        /// Updates revision year field
+        /// </summary>
+        /// <param name="id">Id of the car the revision year has to be updated.</param>
+        /// <param name="lastRevisionYearModel">the new value of revision year to introduce.</param>
+        /// <returns>No content with acknowledgement of update in case of success</returns>
+        /// <response code="204">The update was successful.</response>
+        /// <response code="400">The data received is invalid or may cause inconsistency issue.</response>
+        /// <response code="404">No car with that received id was found.</response>
+        /// <response code="500">An error occured from server/</response>
         [HttpPatch("{id}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
