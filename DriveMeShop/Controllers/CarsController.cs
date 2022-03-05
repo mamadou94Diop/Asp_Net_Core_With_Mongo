@@ -179,7 +179,7 @@ namespace DriveMeShop.Controllers
         public async Task<IActionResult> PatchAsync(string id, CarLastRevisionYearModel lastRevisionYearModel)
         {
             try
-            {
+            { 
                 var car = repository.GetCar(id);
                 if(car != null)
                 {
