@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Net.Mime;
 using System.Threading.Tasks;
+using AutoMapper;
+using DriveMeShop.Entity;
 using DriveMeShop.Extension;
 using DriveMeShop.Model;
 using DriveMeShop.Repository;
@@ -17,10 +19,12 @@ namespace DriveMeShop.Controllers
     public class CarsController : Controller
     {
         private readonly ICarRepository repository;
+        private readonly IMapper mapper;
 
-        public CarsController(ICarRepository _repository)
+        public CarsController(ICarRepository _repository, IMapper _mapper)
         {
             repository = _repository;
+            mapper = _mapper;
         }
 
         /// <summary>
@@ -38,8 +42,11 @@ namespace DriveMeShop.Controllers
         {
             try
             {
-                var cars = repository.GetCars(minimalReleasedYear, maximalReleasedYear).ConvertAll(car => car.ToIdentifiedCarModel());
-                return Ok(cars);
+                var cars = repository.GetCars(minimalReleasedYear, maximalReleasedYear);
+
+                var identifiedCarsModel = mapper.Map<List<Car>, List<IdentifiedCarModel>> (cars);
+
+                return Ok(identifiedCarsModel);
             }
             catch (Exception exception)
             {
@@ -66,7 +73,8 @@ namespace DriveMeShop.Controllers
                 var car = repository.GetCar(id);
                 if (car != null)
                 {
-                    return Ok(car.ToIdentifiedCarModel());
+                    IdentifiedCarModel identifiedCar = mapper.Map<Car, IdentifiedCarModel>(car);
+                    return base.Ok(identifiedCar);
 
                 }
                 else
@@ -102,7 +110,8 @@ namespace DriveMeShop.Controllers
         {
             try
             {
-                var newCarId = await repository.CreateAsync(carModel.ToCar());
+                Car car = mapper.Map<UnidentifiedCarModel, Car>(carModel);
+                var newCarId = await repository.CreateAsync(car);
 
                 return Created("", newCarId);
 
@@ -140,7 +149,8 @@ namespace DriveMeShop.Controllers
                     var car = repository.GetCar(carModel.Id);
                     if (car != null)
                     {
-                        var updatedCarId = await repository.UpdateCarAsync(carModel.ToCar());
+                        Car updatedCar = mapper.Map <IdentifiedCarModel, Car>(carModel) ;
+                        var updatedCarId = await repository.UpdateCarAsync(updatedCar);
                         return Ok(updatedCarId);
                     }
                     else
