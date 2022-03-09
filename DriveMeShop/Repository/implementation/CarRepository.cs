@@ -71,5 +71,17 @@ namespace DriveMeShop.Repository.implementation
 
             return updateResult.IsAcknowledged ? id : null;
         }
+
+        public async Task<bool> DeleteCarAsync(string id)
+        {
+            DeleteResult deleteResult = await carCollection.DeleteOneAsync(car => car.Id == id);
+
+            if (deleteResult.IsAcknowledged && deleteResult.DeletedCount == 1)
+                return true;
+
+
+            return false;
+
+        }
     }
 }

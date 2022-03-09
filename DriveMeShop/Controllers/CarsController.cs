@@ -224,11 +224,56 @@ namespace DriveMeShop.Controllers
 
         }
 
-        // DELETE api/values/5
+        /// <summary>
+        /// Deletes a car from the catalog
+        /// </summary>
+        /// <param name="id">the id of the car to be deleted.</param>
+        /// <returns>No content with acknowledgement of success.</returns>
+        /// <response code="204">The deletion was successful.</response>
+        /// <response code="404">The car with the id received was not found.</response>
+        /// <response code="400">The format of the id received is not good.</response>
+        /// <response code="500">An error occured during the deletion.</response>
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> DeleteAsync(string id)
         {
+            try
+            {
+                var car = repository.GetCar(id);
+
+                if(car != null)
+                {
+                    var isDeleteSuccesful = await repository.DeleteCarAsync(id);
+
+                    if (isDeleteSuccesful)
+                    {
+                        return NoContent();
+                    } else
+                    {
+                        return StatusCode(StatusCodes.Status500InternalServerError, "Delete operation was not successful.");
+                    }
+                }
+                else
+                {
+                    var message = $"Car with id {id} not found";
+                    return NotFound(message);
+
+                }
+            }
+            catch (FormatException exception)
+            {
+                return BadRequest(exception.Message);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "an error occured");
+
+            }
         }
+
 
     }
 }
