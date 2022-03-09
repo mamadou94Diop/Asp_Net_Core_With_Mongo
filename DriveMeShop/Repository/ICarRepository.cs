@@ -11,5 +11,6 @@ namespace DriveMeShop.Repository
         public Car GetCar(string id);
         public Task<string> UpdateCarAsync(Car car);
         public Task<string> UpdateCarLastRevisionYearAsync(string id, int? lastRevisionYear);
+        public Task<bool> DeleteCarAsync(string id);
     }
 }
