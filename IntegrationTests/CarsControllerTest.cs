@@ -11,7 +11,7 @@ using NUnit.Framework;
 
 namespace IntegrationTests
 {
-    public class CarsControllerTests
+    public partial class CarsControllerTests
     {
         private HttpClient httpClient;
         private TestApplicationFactory testApplicationFactory;
