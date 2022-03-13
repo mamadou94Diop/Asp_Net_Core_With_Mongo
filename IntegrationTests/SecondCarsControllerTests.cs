@@ -85,5 +85,38 @@ namespace IntegrationTests
             //Assert
             Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode);
         }
+
+        [Test]
+        public async Task given_a_car_id_when_deletion_of_a_car_with_that_id_is_successful_then_return_204()
+        {
+            //Arrange
+
+            var carId = "6168c06d89af83d580f6e01e";
+
+            //Act
+
+            var result = await httpClient.DeleteAsync($"api/cars/{carId}");
+
+            //Assert
+
+            Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode);
+        }
+
+        [Test]
+        public async Task given_a_car_id_when_a_car_with_that_id_is_not_found_then_return_404()
+        {
+            //Arrange
+
+            var carId = "61f667667cb328c6005c8392";
+
+            //Act
+
+            var result = await httpClient.DeleteAsync($"api/cars/{carId}");
+
+            //Assert
+
+            Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode);
+        }
     }
+
 }
