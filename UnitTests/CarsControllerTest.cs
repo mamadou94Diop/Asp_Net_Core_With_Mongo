@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
 using DriveMeShop.Controllers;
 using DriveMeShop.Entity;
+using DriveMeShop.Mapper;
 using DriveMeShop.Model;
 using DriveMeShop.Repository;
 using Microsoft.AspNetCore.Http;
@@ -14,7 +16,18 @@ namespace UnitTests
 {
     public partial class CarsControllerTest
     {
-      
+        private readonly IMapper mapper;
+
+        public CarsControllerTest()
+        {
+            var mapperConfiguration = new MapperConfiguration(config => {
+
+                config.AddProfile(new CarProfile());
+            });
+
+            mapper = mapperConfiguration.CreateMapper();
+        }
+
         [Test]
         public async Task given_a_new_car_when_insert_succeeded_then_return_201_statusAsync()
         {
@@ -39,7 +52,7 @@ namespace UnitTests
 
             //Act
 
-            var controller = new CarsController(carRepository.Object);
+            var controller = new CarsController(carRepository.Object, mapper);
 
             var result = await controller.PostAsync(carModel);
 
@@ -72,7 +85,7 @@ namespace UnitTests
 
             //Act
 
-            var controller = new CarsController(carRepository.Object);
+            var controller = new CarsController(carRepository.Object, mapper);
 
             var result = await controller.PostAsync(carModel);
 
@@ -101,7 +114,7 @@ namespace UnitTests
 
             //Act
 
-            var controller = new CarsController(carRepository.Object);
+            var controller = new CarsController(carRepository.Object, mapper);
             var result = controller.Get(null, null);
 
             //Assert
@@ -127,7 +140,7 @@ namespace UnitTests
                 .Returns(mockCar);
 
             //Act
-            var controller = new CarsController(carRepository.Object);
+            var controller = new CarsController(carRepository.Object, mapper);
             var result = controller.Get("112TVTVTVT");
 
             //Assert
@@ -145,7 +158,7 @@ namespace UnitTests
                 .Returns(mockCar);
 
             //Act
-            var controller = new CarsController(carRepository.Object);
+            var controller = new CarsController(carRepository.Object, mapper);
             var result = controller.Get("112TVTVTVT");
 
             //Assert
@@ -163,7 +176,7 @@ namespace UnitTests
 
 
             //Act
-            var controller = new CarsController(carRepository.Object);
+            var controller = new CarsController(carRepository.Object, mapper);
             var result = controller.Get("1452555ADDDKD");
 
 
@@ -190,7 +203,7 @@ namespace UnitTests
                 .Returns(Task.FromResult<string>(mockCarId));
 
             //Act
-            var controller = new CarsController(carRepository.Object);
+            var controller = new CarsController(carRepository.Object, mapper);
             var result = await controller.PutAsync(carmodel);
 
             //Assert
@@ -234,7 +247,7 @@ namespace UnitTests
                 .Throws(mockException);
 
             //Act
-            var controller = new CarsController(carRepository.Object);
+            var controller = new CarsController(carRepository.Object, mapper);
             var result = await controller.PutAsync(carmodel);
 
             //Assert
@@ -280,7 +293,7 @@ namespace UnitTests
                 .Returns(Task.FromResult(id));
 
             //Act
-            var controller = new CarsController(carRepository.Object);
+            var controller = new CarsController(carRepository.Object, mapper);
             var result = await controller.PutAsync(carmodel);
 
             //Assert
@@ -309,7 +322,7 @@ namespace UnitTests
                 .Returns(Task.FromResult(id));
 
             //Act
-            var controller = new CarsController(carRepository.Object);
+            var controller = new CarsController(carRepository.Object, mapper);
             var result = await controller.PutAsync(carmodel);
 
             //Assert

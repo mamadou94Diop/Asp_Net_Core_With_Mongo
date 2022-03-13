@@ -45,7 +45,7 @@ namespace UnitTests
 
             //Act
 
-            var controller = new CarsController(mockCarRepository.Object);
+            var controller = new CarsController(mockCarRepository.Object, mapper);
             var result = await controller.PatchAsync(carId, lastRevisionYearModel);
 
             //Assert
@@ -84,7 +84,7 @@ namespace UnitTests
 
             //Act
 
-            var controller = new CarsController(mockCarRepository.Object);
+            var controller = new CarsController(mockCarRepository.Object, mapper);
             var result = await controller.PatchAsync(carId, lastRevisionYearModel);
 
             //Assert
@@ -122,7 +122,7 @@ namespace UnitTests
 
             //Act
 
-            var controller = new CarsController(mockCarRepository.Object);
+            var controller = new CarsController(mockCarRepository.Object, mapper);
             var result = await controller.PatchAsync(carId, lastRevisionYearModel);
 
             //Assert
@@ -150,7 +150,7 @@ namespace UnitTests
 
             //Act
 
-            var controller = new CarsController(mockCarRepository.Object);
+            var controller = new CarsController(mockCarRepository.Object, mapper);
             var result = await controller.PatchAsync(carId, lastRevisionYearModel);
 
             //Assert
@@ -192,7 +192,7 @@ namespace UnitTests
 
             //Act
 
-            var controller = new CarsController(mockCarRepository.Object);
+            var controller = new CarsController(mockCarRepository.Object, mapper);
             var result = await controller.PatchAsync(carId, lastRevisionYearModel);
 
             //Assert
@@ -218,7 +218,7 @@ namespace UnitTests
 
             //Act
 
-            var controller = new CarsController(mockCarRepository.Object);
+            var controller = new CarsController(mockCarRepository.Object, mapper);
             var result = await controller.DeleteAsync(carId);
 
             //Assert
@@ -244,7 +244,7 @@ namespace UnitTests
 
             //Act
 
-            var controller = new CarsController(mockCarRepository.Object);
+            var controller = new CarsController(mockCarRepository.Object, mapper);
             var result = await controller.DeleteAsync(carId);
 
             //Assert
@@ -268,7 +268,7 @@ namespace UnitTests
 
             //Act
 
-            var controller = new CarsController(mockCarRepository.Object);
+            var controller = new CarsController(mockCarRepository.Object, mapper);
             var result = await controller.DeleteAsync(carId);
 
             //Assert
