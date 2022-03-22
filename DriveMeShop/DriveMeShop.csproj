@@ -27,6 +27,7 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.2" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
     <PackageReference Include="AutoMapper" Version="11.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.0.0" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="CustomAnnotations\" />
@@ -37,5 +38,6 @@
     <None Remove="AutoMapper.Extensions.Microsoft.DependencyInjection" />
     <None Remove="AutoMapper" />
     <None Remove="Mapper\" />
+    <None Remove="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" />
   </ItemGroup>
 </Project>

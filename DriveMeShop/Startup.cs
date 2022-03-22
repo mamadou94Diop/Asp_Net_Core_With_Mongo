@@ -32,6 +32,7 @@ namespace DriveMeShop
         {
             services.AddControllers();
             services.AddMvc().AddFluentValidation();
+            services.AddApiVersioning();// you will come back here later
             services.AddSwaggerGen(options =>
             {
                 options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
@@ -83,7 +84,7 @@ namespace DriveMeShop
                 app.UseSwagger();
                 app.UseSwaggerUI(options =>
                 {
-                    options.SwaggerEndpoint("v1/swagger.json", "DriveMeShop API");
+                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "DriveMeShop API");
                 });
             }
 
