@@ -32,7 +32,14 @@ namespace DriveMeShop
         {
             services.AddControllers();
             services.AddMvc().AddFluentValidation();
-            services.AddApiVersioning();// you will come back here later
+            services.AddApiVersioning();
+            services.AddVersionedApiExplorer(config =>
+              {
+                  config.SubstituteApiVersionInUrl = true;
+                  config.GroupNameFormat = "'v'VVV";
+
+              }
+            );
             services.AddSwaggerGen(options =>
             {
                 options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
