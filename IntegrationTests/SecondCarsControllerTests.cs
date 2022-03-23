@@ -23,7 +23,7 @@ namespace IntegrationTests
             var body = new StringContent(jsonBody, Encoding.UTF8, "application/json");
 
             //Act
-            var result = await httpClient.PatchAsync("api/cars/6168c06d89af83d580f6e01e", body);
+            var result = await httpClient.PatchAsync("api/v1/cars/6168c06d89af83d580f6e01e", body);
 
             //Assert
             Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode);
@@ -42,7 +42,7 @@ namespace IntegrationTests
             var body = new StringContent(jsonBody, Encoding.UTF8, "application/json");
 
             //Act
-            var result = await httpClient.PatchAsync("api/cars/6168c06d89af83d580f6e01e", body);
+            var result = await httpClient.PatchAsync("api/v1/cars/6168c06d89af83d580f6e01e", body);
 
             //Assert
             Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode);
@@ -61,7 +61,7 @@ namespace IntegrationTests
             var body = new StringContent(jsonBody, Encoding.UTF8, "application/json");
 
             //Act
-            var result = await httpClient.PatchAsync("api/cars/6168c06d89af8380f6e01e", body);
+            var result = await httpClient.PatchAsync("api/v1/cars/6168c06d89af8380f6e01e", body);
 
             //Assert
             Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode);
@@ -80,7 +80,7 @@ namespace IntegrationTests
             var body = new StringContent(jsonBody, Encoding.UTF8, "application/json");
 
             //Act
-            var result = await httpClient.PatchAsync("api/cars/61f667667cb328c6005c8392", body);
+            var result = await httpClient.PatchAsync("api/v1/cars/61f667667cb328c6005c8392", body);
 
             //Assert
             Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode);
@@ -95,7 +95,7 @@ namespace IntegrationTests
 
             //Act
 
-            var result = await httpClient.DeleteAsync($"api/cars/{carId}");
+            var result = await httpClient.DeleteAsync($"api/v1/cars/{carId}");
 
             //Assert
 
@@ -111,7 +111,7 @@ namespace IntegrationTests
 
             //Act
 
-            var result = await httpClient.DeleteAsync($"api/cars/{carId}");
+            var result = await httpClient.DeleteAsync($"api/v1/cars/{carId}");
 
             //Assert
 
