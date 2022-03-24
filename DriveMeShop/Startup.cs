@@ -1,6 +1,8 @@
 using System;
 using System.Reflection;
+using AutoMapper;
 using DriveMeShop.Entity;
+using DriveMeShop.Mapper;
 using DriveMeShop.Model;
 using DriveMeShop.Repository;
 using DriveMeShop.Repository.implementation;
@@ -60,10 +62,17 @@ namespace DriveMeShop
             var carRepository = new CarRepository(collection);
 
             services.AddTransient<ICarRepository>(_ => carRepository);
-
             services.AddTransient<IValidator<UnidentifiedCarModel>>(_ => new CarModelValidator<UnidentifiedCarModel>());
             services.AddTransient<IValidator<IdentifiedCarModel>>(_ => new CarModelValidator<IdentifiedCarModel>());
 
+            var mapperConfiguration = new MapperConfiguration(config =>
+            {
+                config.AddProfile(new CarProfile());
+            });
+
+            var mapper = mapperConfiguration.CreateMapper();
+
+            services.AddSingleton(mapper);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
