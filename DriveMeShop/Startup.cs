@@ -64,7 +64,6 @@ namespace DriveMeShop
             services.AddTransient<ICarRepository>(_ => carRepository);
             services.AddTransient<IValidator<UnidentifiedCarModel>>(_ => new CarModelValidator<UnidentifiedCarModel>());
             services.AddTransient<IValidator<IdentifiedCarModel>>(_ => new CarModelValidator<IdentifiedCarModel>());
-
             var mapperConfiguration = new MapperConfiguration(config =>
             {
                 config.AddProfile(new CarProfile());
