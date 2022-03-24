@@ -4,6 +4,8 @@ using AutoMapper;
 using DriveMeShop.Entity;
 using DriveMeShop.Mapper;
 using DriveMeShop.Model;
+using DriveMeShop.Model.V1;
+using DriveMeShop.Model.V2;
 using DriveMeShop.Repository;
 using DriveMeShop.Repository.implementation;
 using DriveMeShop.Validators;
