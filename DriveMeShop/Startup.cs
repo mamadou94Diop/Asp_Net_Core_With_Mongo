@@ -65,15 +65,22 @@ namespace DriveMeShop
             var databaseName = Configuration.GetSection("DatabaseName");
             var collectionName = Configuration.GetSection("CarCollectionName");
 
-            var mongoClient = new MongoClient(databaseConnection.Value);
+             var mongoClient = new MongoClient(databaseConnection.Value);
             var database = mongoClient.GetDatabase(databaseName.Value);
             var collection = database.GetCollection<Car>(collectionName.Value);
 
             var carRepository = new CarRepository(collection);
 
             services.AddTransient<ICarRepository>(_ => carRepository);
-            services.AddTransient<IValidator<UnidentifiedCarModel>>(_ => new CarModelValidator<UnidentifiedCarModel>());
-            services.AddTransient<IValidator<IdentifiedCarModel>>(_ => new CarModelValidator<IdentifiedCarModel>());
+
+
+            services.AddTransient<IValidator<Model.V1.UnidentifiedCarModel>>(_ => new CarModelValidator<Model.V1.UnidentifiedCarModel>());
+            services.AddTransient<IValidator<Model.V1.IdentifiedCarModel>>(_ => new CarModelValidator<Model.V1.IdentifiedCarModel>());
+            services.AddTransient<IValidator<Model.V2.UnidentifiedCarModel>>(_ => new CarModelValidator<Model.V2.UnidentifiedCarModel>());
+            services.AddTransient<IValidator<Model.V2.IdentifiedCarModel>>(_ => new CarModelValidator<Model.V2.IdentifiedCarModel>());
+
+
+
             var mapperConfiguration = new MapperConfiguration(config =>
             {
                 config.AddProfile(new CarProfile());

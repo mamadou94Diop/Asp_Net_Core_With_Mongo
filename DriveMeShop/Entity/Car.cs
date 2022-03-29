@@ -15,5 +15,8 @@ namespace DriveMeShop.Entity
         public int ReleasedYear { get; set; }
         public int? LastRevisionYear { get; set; }
         public string TransmissionMode { get; set; }
+        public string Color { get; set; }
+        public int MaxSpeed { get; set; }
     }
 }
+    

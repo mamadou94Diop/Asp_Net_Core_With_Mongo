@@ -15,10 +15,13 @@
     <Folder Include="Repository\" />
     <Folder Include="Repository\implementation\" />
     <Folder Include="Model\" />
-    <Folder Include="Extension\" />
     <Folder Include="CustomAnnotations\" />
     <Folder Include="Validators\" />
     <Folder Include="Mapper\" />
+    <Folder Include="Model\V1\" />
+    <Folder Include="Model\V2\" />
+    <Folder Include="Controllers\V1\" />
+    <Folder Include="Controllers\V2\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MongoDB.Driver" Version="2.12.1" />
@@ -39,5 +42,9 @@
     <None Remove="AutoMapper" />
     <None Remove="Mapper\" />
     <None Remove="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" />
+    <None Remove="Model\V1\" />
+    <None Remove="Model\V2\" />
+    <None Remove="Controllers\V1\" />
+    <None Remove="Controllers\V2\" />
   </ItemGroup>
 </Project>

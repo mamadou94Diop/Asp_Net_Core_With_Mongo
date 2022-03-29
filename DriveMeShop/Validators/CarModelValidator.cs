@@ -4,7 +4,7 @@ using FluentValidation;
 
 namespace DriveMeShop.Validators
 {
-    public class CarModelValidator<T> : AbstractValidator<T> where T:UnidentifiedCarModel
+    public class CarModelValidator<T> : AbstractValidator<T> where T: BaseCarModel
     {
 
         public CarModelValidator()

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using DriveMeShop.Controllers;
+using DriveMeShop.Controllers.V1;
 using DriveMeShop.Entity;
 using DriveMeShop.Model;
 using DriveMeShop.Repository;
