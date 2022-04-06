@@ -1,11 +1,7 @@
 using System;
-using System.Reflection;
 using AutoMapper;
 using DriveMeShop.Entity;
 using DriveMeShop.Mapper;
-using DriveMeShop.Model;
-using DriveMeShop.Model.V1;
-using DriveMeShop.Model.V2;
 using DriveMeShop.Repository;
 using DriveMeShop.Repository.implementation;
 using DriveMeShop.Validators;
@@ -65,7 +61,7 @@ namespace DriveMeShop
             var databaseName = Configuration.GetSection("DatabaseName");
             var collectionName = Configuration.GetSection("CarCollectionName");
 
-             var mongoClient = new MongoClient(databaseConnection.Value);
+            var mongoClient = new MongoClient(databaseConnection.Value);
             var database = mongoClient.GetDatabase(databaseName.Value);
             var collection = database.GetCollection<Car>(collectionName.Value);
 

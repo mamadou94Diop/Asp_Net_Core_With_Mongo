@@ -5,7 +5,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using DriveMeShop.Entity;
-using DriveMeShop.Model;
+using DriveMeShop.Model.V1;
 using Newtonsoft.Json;
 using NUnit.Framework;
 
