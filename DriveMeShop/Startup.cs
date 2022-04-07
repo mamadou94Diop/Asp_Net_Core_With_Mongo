@@ -51,6 +51,20 @@ namespace DriveMeShop
                          Email = "mamadou-abdoulaye.diop@hotmail.com"
                     }
                 });
+
+                options.SwaggerDoc("v2", new Microsoft.OpenApi.Models.OpenApiInfo
+                {
+                    Description = "Documentation for DriveMeShop API V2",
+                    Title = "DriveMeShop API V2",
+                    Version = "V2.0",
+                    Contact = new Microsoft.OpenApi.Models.OpenApiContact
+                    {
+
+                        Name = "Mamadou Diop",
+                        Email = "mamadou-abdoulaye.diop@hotmail.com"
+                    }
+                });
+
                 var rootPath = AppContext.BaseDirectory;
                 var xmlPath = "DriveMeShop.xml";
                 options.IncludeXmlComments(rootPath + xmlPath, true);
@@ -96,7 +110,9 @@ namespace DriveMeShop
                 app.UseSwagger();
                 app.UseSwaggerUI(options =>
                 {
-                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "DriveMeShop API");
+                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "DriveMeShop API V1");
+                    options.SwaggerEndpoint("/swagger/v2/swagger.json", "DriveMeShop API V2");
+
                 });
             }
 

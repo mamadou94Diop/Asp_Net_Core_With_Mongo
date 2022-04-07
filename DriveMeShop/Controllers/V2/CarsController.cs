@@ -27,7 +27,14 @@ namespace DriveMeShop.Controllers.V2
             mapper = _mapper;
         }
 
-        // GET: api/values
+        /// <summary>
+        /// Retrieves all the cars available in catalogue
+        /// </summary>
+        /// <returns>list of cars </returns>
+        /// <response code="200">List of cars returned</response>
+        /// <response code="500">An error occured from server</response>
+        [ProducesResponseType(typeof(List<IdentifiedCarModel>), 200)]
+        [ProducesResponseType(500)]
         [HttpGet]
         public IActionResult Get()
         {
@@ -45,7 +52,17 @@ namespace DriveMeShop.Controllers.V2
             }
         }
 
-        // GET api/values/5
+        /// <summary>
+        /// Retrieve car with id matching with passed parameter
+        /// </summary>
+        /// <param name="id">id of the car to search</param>
+        /// <returns> the car corresponding with that id</returns>
+        /// <response code="200">The car with id passed was searched was found and returned</response>
+        /// <response code="404"> The car with id passed was not found</response>>
+        /// <response code="500">An error occured from server</response>
+        [ProducesResponseType(typeof(IdentifiedCarModel), 200)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
         [HttpGet("{id}")]
         public IActionResult Get(string id)
         {
@@ -75,7 +92,19 @@ namespace DriveMeShop.Controllers.V2
         }
 
 
+        /// <summary>
+        /// Creates a new car in catalog
+        /// </summary>
+        /// <param name="carModel"></param>
+        /// <returns>id of new inserted car</returns>
+        /// <response code="201">The car is succesfully created</response>
+        /// <response code="500">An error occured from the server when creating the car</response>
+        /// <response code="400">Data sent is not valid.</response>
         [HttpPost]
+        [ProducesResponseType(typeof(string), 201)]
+        [ProducesResponseType(500)]
+        [ProducesResponseType(400)]
+        [Consumes("application/json")]
         public async Task<IActionResult> PostAsync(UnidentifiedCarModel carModel)
         {
             try
@@ -89,18 +118,6 @@ namespace DriveMeShop.Controllers.V2
                 return StatusCode(StatusCodes.Status500InternalServerError, "an error occured");
 
             }
-        }
-
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
         }
     }
 }
