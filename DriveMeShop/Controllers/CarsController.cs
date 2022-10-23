@@ -24,11 +24,11 @@ namespace DriveMeShop.Controllers
         }
 
         /// <summary>
-        /// Retrieves a list of cars available in catalog, matching optionnally with some filters
+        /// Retrieves a list of cars available in catalog matching optionally filter on releasedYear
         /// </summary>
         /// <returns>list of cars </returns>
-        /// <param name="minimalReleasedYear">The year API should shart look up cars released that year and beyond</param>
-        /// <param name="maximalReleasedYear">the last year API should look up cars released to that year</param>
+        /// <param name="minimalReleasedYear">The minimal released year api should start searching car</param>
+        /// <param name="maximalReleasedYear">The maximal released year api should stop searching car beyond</param>
         /// <response code="200">List of cars returned</response>
         /// <response code="500">An error occured from server</response>
         [ProducesResponseType(typeof(List<CarModel>),200)]
